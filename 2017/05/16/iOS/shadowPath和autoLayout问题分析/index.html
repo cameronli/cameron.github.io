@@ -9,21 +9,18 @@
   <title>shadowPath和autoLayout问题分析 | CameronL&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="前提前一段时间在开发的过程中，遇到了一个坑，当我给某个View添加阴影效果的时候，因为这个View的Size是动态的，然后动态改变View的size的时候，阴影没有随着改变，用了半天才把这个问题解决，最后总结的时候觉得是自己对阴影效果理解不透彻，所以在此记录一下，以便加深印象，下面附上代码分析：
-
-代码分析1234567891011121314// shadowColor阴影颜色view.laye">
+代码分析1234567891011121314// shadowColor阴影颜色view.layer">
 <meta property="og:type" content="article">
 <meta property="og:title" content="shadowPath和autoLayout问题分析">
 <meta property="og:url" content="http://www.cameron-li.com/2017/05/16/iOS/shadowPath和autoLayout问题分析/index.html">
 <meta property="og:site_name" content="CameronL's Blog">
 <meta property="og:description" content="前提前一段时间在开发的过程中，遇到了一个坑，当我给某个View添加阴影效果的时候，因为这个View的Size是动态的，然后动态改变View的size的时候，阴影没有随着改变，用了半天才把这个问题解决，最后总结的时候觉得是自己对阴影效果理解不透彻，所以在此记录一下，以便加深印象，下面附上代码分析：
-
-代码分析1234567891011121314// shadowColor阴影颜色view.laye">
-<meta property="og:updated_time" content="2017-05-18T03:00:40.000Z">
+代码分析1234567891011121314// shadowColor阴影颜色view.layer">
+<meta property="og:updated_time" content="2017-05-18T03:03:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shadowPath和autoLayout问题分析">
 <meta name="twitter:description" content="前提前一段时间在开发的过程中，遇到了一个坑，当我给某个View添加阴影效果的时候，因为这个View的Size是动态的，然后动态改变View的size的时候，阴影没有随着改变，用了半天才把这个问题解决，最后总结的时候觉得是自己对阴影效果理解不透彻，所以在此记录一下，以便加深印象，下面附上代码分析：
-
-代码分析1234567891011121314// shadowColor阴影颜色view.laye">
+代码分析1234567891011121314// shadowColor阴影颜色view.layer">
   
     <link rel="alternative" href="/atom.xml" title="CameronL&#39;s Blog" type="application/atom+xml">
   
@@ -180,9 +177,9 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h3><p>前一段时间在开发的过程中，遇到了一个坑，当我给某个View添加阴影效果的时候，因为这个View的Size是动态的，然后动态改变View的size的时候，阴影没有随着改变，用了半天才把这个问题解决，最后总结的时候觉得是自己对阴影效果理解不透彻，所以在此记录一下，以便加深印象，下面附上代码分析：</p>
-<hr>
 <h3 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">// shadowColor阴影颜色</div><div class="line">view.layer.shadowColor = [UIColor blackColor].CGColor;</div><div class="line"></div><div class="line">// shadowOffset阴影偏移,x向右偏移4，y向下偏移4，默认(0, -3)</div><div class="line">view.layer.shadowOffset = CGSizeMake(4,4);</div><div class="line"></div><div class="line">// 阴影透明度，默认0</div><div class="line">view.layer.shadowOpacity = 0.3;</div><div class="line"></div><div class="line">// 阴影半径，默认3</div><div class="line">view.layer.shadowRadius = 4;</div><div class="line"></div><div class="line">// shadowPath阴影路径</div><div class="line">view.layer.shadowPath = [[UIBezierPath bezierPathWithRect:view.bounds] CGPath];</div></pre></td></tr></table></figure>
-<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p><strong>shadowPath可以提前告诉 CoreAnimation 你要渲染的view的形状的Shape，可以减少离屏渲染的计算时间，大大的提高性能，防止低性能设备的卡顿出现</strong></p>
+<hr>
+<p><strong>注意</strong><br><strong>shadowPath可以提前告诉 CoreAnimation 你要渲染的view的形状的Shape，可以减少离屏渲染的计算时间，大大的提高性能，防止低性能设备的卡顿出现</strong></p>
 <h3 id="然而！！！但是！！！意外发生了。。。"><a href="#然而！！！但是！！！意外发生了。。。" class="headerlink" title="然而！！！但是！！！意外发生了。。。"></a>然而！！！但是！！！意外发生了。。。</h3><p>因为设置了shadowPath，当因为屏幕的不一样，autolayout会改变view的size，或者某些的操作改变了view的size，shadowPath没有随着改变，导致阴影的位置对不上，一开始没有往这方面想，以为是分辨率不一样要不同的处理，弄了半天。。。</p>
 <p>最后发现解决问题的方向搞错了，网上终于找了真正的原因，下面是个人觉得比较好的解决方式，上代码！</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- (void)layoutSubviews &#123;</div><div class="line">    [super layoutSubviews];</div><div class="line">    self.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.layer.bounds].CGPath;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -407,11 +404,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">iOS</a>
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+                <a href="javascript:void(0)" class="js-tag color4">iOS</a>
               </li>
             
             <div class="clearfix"></div>
