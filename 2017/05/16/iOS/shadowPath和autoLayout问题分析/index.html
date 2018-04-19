@@ -5,18 +5,18 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://www.cameron-li.com">
+  <link rel="dns-prefetch" href="http://www.cameronl.cn">
   <title>shadowPath和autoLayout问题分析 | CameronL&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="前提前一段时间在开发的过程中，遇到了一个坑，当我给某个View添加阴影效果的时候，因为这个View的Size是动态的，然后动态改变View的size的时候，阴影没有随着改变，用了半天才把这个问题解决，最后总结的时候觉得是自己对阴影效果理解不透彻，所以在此记录一下，以便加深印象，下面附上代码分析：
 代码分析1234567891011121314// shadowColor阴影颜色view.layer">
 <meta property="og:type" content="article">
 <meta property="og:title" content="shadowPath和autoLayout问题分析">
-<meta property="og:url" content="http://www.cameron-li.com/2017/05/16/iOS/shadowPath和autoLayout问题分析/index.html">
+<meta property="og:url" content="http://www.cameronl.cn/2017/05/16/iOS/shadowPath和autoLayout问题分析/index.html">
 <meta property="og:site_name" content="CameronL's Blog">
 <meta property="og:description" content="前提前一段时间在开发的过程中，遇到了一个坑，当我给某个View添加阴影效果的时候，因为这个View的Size是动态的，然后动态改变View的size的时候，阴影没有随着改变，用了半天才把这个问题解决，最后总结的时候觉得是自己对阴影效果理解不透彻，所以在此记录一下，以便加深印象，下面附上代码分析：
 代码分析1234567891011121314// shadowColor阴影颜色view.layer">
-<meta property="og:updated_time" content="2017-05-18T03:03:28.000Z">
+<meta property="og:updated_time" content="2017-05-18T03:04:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shadowPath和autoLayout问题分析">
 <meta name="twitter:description" content="前提前一段时间在开发的过程中，遇到了一个坑，当我给某个View添加阴影效果的时候，因为这个View的Size是动态的，然后动态改变View的size的时候，阴影没有随着改变，用了半天才把这个问题解决，最后总结的时候觉得是自己对阴影效果理解不透彻，所以在此记录一下，以便加深印象，下面附上代码分析：
@@ -184,7 +184,8 @@
 <p>最后发现解决问题的方向搞错了，网上终于找了真正的原因，下面是个人觉得比较好的解决方式，上代码！</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- (void)layoutSubviews &#123;</div><div class="line">    [super layoutSubviews];</div><div class="line">    self.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.layer.bounds].CGPath;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>新建一个UIView的子类，重写layoutSubviews方法，当view改变大小会调用此方法，然后相应的改变shadowPath，完美解决！！！</p>
-<h3 id="end"><a href="#end" class="headerlink" title="end"></a>end</h3>
+<p><strong>end</strong></p>
+
       
 
       
@@ -284,7 +285,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://www.cameron-li.com/2017/05/16/iOS/shadowPath和autoLayout问题分析/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://www.cameronl.cn/2017/05/16/iOS/shadowPath和autoLayout问题分析/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -297,6 +298,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2017/05/18/iOS/load-和-initialize-初探/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          + load 和 + initialize 初探
+        
+      </div>
+    </a>
   
   
     <a href="/2017/05/12/Blog/Markdown语法/" id="article-nav-older" class="article-nav-link-wrap">
@@ -326,7 +336,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2017 CameronL
+    		&copy; 2018 CameronL
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
