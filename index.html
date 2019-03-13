@@ -155,6 +155,89 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Mac配置多个git-ssh-key" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/13/Mac配置多个git-ssh-key/">Mac配置多个git ssh key</a>
+    </h1>
+  
+
+        
+        <a href="/2019/03/13/Mac配置多个git-ssh-key/" class="archive-article-date">
+  	<time datetime="2019-03-13T15:43:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##现在有两个git账户，一个是公司的gitLab，一个是gitHub，通过配置使两个共存。</p>
+<h3 id="生成gitlab（设为：默认）ssh-key"><a href="#生成gitlab（设为：默认）ssh-key" class="headerlink" title="生成gitlab（设为：默认）ssh key"></a>生成gitlab（设为：默认）ssh key</h3><p>1.通过ssh-keygen生成key，默认会在~/.ssh/下生成id_rsa（私钥）和id_rsa.pub（公钥）</p>
+<pre><code>ssh-keygen -t rsa -C &apos;your-email&apos; 
+</code></pre><p>2.拷贝key</p>
+<pre><code>pbcopy &lt; ~/.ssh/id_rsa.pub
+</code></pre><p>3.验证</p>
+<pre><code>ssh -T git@your-gitlab-server
+</code></pre><p>以上完成gitlab账户的ssh key配置</p>
+<h2 id="生成github的ssh-key"><a href="#生成github的ssh-key" class="headerlink" title="生成github的ssh key"></a>生成github的ssh key</h2><p>1.使用参数-f指定key的文件名id_rsa.github</p>
+<pre><code>ssh-keygen -t rsa -f ~/.ssh/id_rsa.github -C &apos;your-email&apos;
+</code></pre><p>2.拷贝key到github</p>
+<p>3.添加config</p>
+<pre><code>cd ~/.ssh/
+touch config
+</code></pre><p>在config写入下面的内容：</p>
+<pre><code>Host github.com
+    IdentityFile ~/.ssh/id_rsa.github
+    User git
+</code></pre><p>4.验证github</p>
+<pre><code>ssh -T git@github.com
+</code></pre><p>以上完成了多个git的ssh key配置</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/03/13/Mac配置多个git-ssh-key/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-iOS/load-和-initialize-初探" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -678,11 +761,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">blog</a>
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+                <a href="javascript:void(0)" class="js-tag color5">blog</a>
               </li>
              
               <li class="article-tag-list-item">
