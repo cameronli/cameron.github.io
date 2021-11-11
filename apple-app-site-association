@@ -4,7 +4,7 @@
         "details": [
             {
                 "appID": "5L586T75M7.com.redfinger.browsers",
-                "paths": [ "/applink/browsers/*", "/qq_conn/101894505/*" ]
+                "paths": [ "/applink/browsers/*", "/qq_conn/101894505/*"]
             }
         ]
     }
